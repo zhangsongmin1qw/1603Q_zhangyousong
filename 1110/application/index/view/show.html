@@ -1,0 +1,60 @@
+<center>
+<body id="bo">
+<table width="599" height="60" border="1" cellspacing="0" cellpadding="0">
+    <tr align="center">
+        <td><button id="btn" name="quan">全选</button></td>
+        <td>品牌名称</td>
+        <td>品牌LOGO</td>
+        <td>品牌网址</td>
+        <td>品牌描述</td>
+        <td>排序</td>
+        <td>操作</td>
+    </tr>
+    {volist name="list" id="v"}
+    <tr align="center">
+        <td><input type="checkbox" name="allCheckbox"></td>
+        <td>{$v.name}</td>
+        <td><img src="__ROOT__/uploads/{$v.img}" width="50px;"></td>
+        <td>{$v.url}</td>
+        <td>{$v.author}</td>
+        <td>{$v.number}</td>
+        <td><a href="update?id={$v.id}">编辑</a>&nbsp;&nbsp;<a href="del?id={$v.id}">移除</a></td>
+    </tr>
+    {/volist}
+</table>
+<span id="page">
+    {$page}
+</span>
+</body>
+</center>
+<script src="__JS__/jquery-3.3.1.js"></script>
+<script>
+   $(document).on('click','#page a',function(){
+       event.preventDefault();
+       var url=$(this).attr('href');
+       $.ajax({
+           url:url,
+           success:function(res){
+               $('#bo').html(res);
+           }
+       })
+   })
+    //全选全不选
+    $(document).on('click','#btn',function(){
+        var checkboxObj=$("input[type='checkbox']");
+        var obj=$(this);
+        if(obj.attr('name')=='quan'){
+            $.each(checkboxObj,function(k,v){
+                $(v).prop('checked',true);
+            })
+            obj.attr('name','fan');
+            obj.text('全不选');
+        }else{
+            $.each(checkboxObj,function(k,v){
+                $(v).prop('checked',false);
+            })
+            obj.attr('name','quan');
+            obj.text('全选');
+        }
+    })
+</script>
